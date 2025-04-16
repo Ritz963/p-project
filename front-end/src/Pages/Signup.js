@@ -25,7 +25,7 @@ const SignUp = () => {
             return;
         }
         
-        console.log(response.data);
+        console.log("created account");
         navigate('/');
         
     };
