@@ -1,11 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
+import '../css/App.css';
 import Navigation from '../Components/Navigation';
 
 
 const Home = () => {
   return (
-    <div className="App">
+    <div className="Home">
         <Navigation/>
 
       <h1>
