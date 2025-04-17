@@ -1,3 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure the entire app fits the screen */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* Overall carousels container */
+.carousels-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;  /* centers each carousel horizontally */
+}
+
+/* Standard carousel container for all carousels (remains unchanged) */
+.carousel-image {
+  position: relative;
+  width: 500px;     /* Consistent container width */
+  height: 300px;    /* Consistent container height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Default image styling for all carousels */
+.carousel-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Override image styling for the shoes carousel only */
+.shoes-carousel .carousel-image img {
+  width: 300px !important;    /* Force smaller width for shoes image */
+  height: 150px !important;   /* Force smaller height for shoes image */
+  object-fit: contain;
+  margin: auto;               /* Center the smaller image within the container */
+}
+
+/* Override styling for shoes images only */
+.carousel-image img.shoes-image {
+  width: 300px !important;
+  height: 150px !important;
+  object-fit: contain;
+  margin: 0 auto;  /* removes vertical centering */
+  align-self: flex-start;
+}
+
+/* Arrow button styling remains the same */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.left-arrow {
+  left: 0.5rem;
+}
+
+.right-arrow {
+  right: 0.5rem;
+}
+
+/* Overall carousels container */
+.carousels-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;  /* centers each carousel horizontally */
+}
+
+/* Slick Carousel Container – the same for all carousels */
+.slick-carousel-container {
+  width: 500px;     /* Fixed container width */
+  height: 300px;    /* Fixed container height */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Each slide in the slider */
+.carousel-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px; /* same as container height */
+}
+
+/* Default styling for images (shirts, pants, etc.) */
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Override styling for shoes images only.
+   Ensure that the shoes carousel passes an extra class (e.g. "shoes-image")
+   to the img element. This rule forces the shoes image to be rendered smaller,
+   while leaving the container (and therefore arrow positions) unchanged. */
+.carousel-slide img.shoes-image {
+  width: 300px !important;
+  height: 150px !important;
+  object-fit: contain;
+  margin: auto;
+}
+
+/* React-slick default arrow button styling override */
+/* These selectors override the default arrow styles provided by slick-carousel */
+.slick-prev,
+.slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 2rem;
+  line-height: 40px; /* centers the arrow text */
+  cursor: pointer;
+}
+
+/* Adjust arrow positions if needed */
+.slick-prev {
+  left: 10px;
+}
+.slick-next {
+  right: 10px;
+}
+
+/* Override for the shoes carousel: make the image container smaller and center it */
+.shoes-carousel .carousel-image {
+  width: 300px;         /* Smaller width for shoes */
+  height: 150px;        /* Smaller height for shoes */
+  margin: 0 auto;       /* Center horizontally within the container */
+}
+
+/* Optionally adjust arrow sizes for the shoes carousel */
+.shoes-carousel .arrow {
+  font-size: 1.5rem;
+}
+
+/* Action buttons container on the right */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Shared styling for the action buttons */
+.action-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  background: #fff;
+  border: 2px solid rgba(189, 189, 189, 0.7);
+  border-radius: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.action-btn:hover {
+  background: #f5f5f5;
+}
 .App {
   text-align: center;
 }
@@ -63,6 +255,9 @@
   background-position: center;
   min-height: 100vh;
   min-width:100vh;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
 }
 
 body {
