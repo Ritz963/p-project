@@ -83,6 +83,9 @@ const SignUp = () => {
             </form>
         </div>
         </div>
+        <video autoPlay loop muted playsInline className="background-video">
+            <source src={require('../assets/background-video1.mp4')} type="video/mp4" />
+        </video>
     </div>
   );
 };
