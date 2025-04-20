@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+// src/Components/ImageCarousel.js
+import React from 'react';
 
-const ImageCarousel = ({ images, imageClass = '' }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+export default function ImageCarousel({
+  images,
+  imageClass = '',
+  selectedIndex = 0,      // controlled index
+  onChangeIndex = () => {}// notify parent when index changes
+}) {
   const nextImage = () => {
-    setCurrentIndex((currentIndex + 1) % images.length);
+    const nxt = (selectedIndex + 1) % images.length;
+    onChangeIndex(nxt);
   };
 
   const prevImage = () => {
-    setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+    const prev = (selectedIndex - 1 + images.length) % images.length;
+    onChangeIndex(prev);
   };
 
   return (
@@ -17,13 +23,15 @@ const ImageCarousel = ({ images, imageClass = '' }) => {
         <button className="arrow left-arrow" onClick={prevImage}>
           &larr;
         </button>
-        <img className={imageClass} src={images[currentIndex]} alt={`Slide ${currentIndex + 1}`} />
+        <img
+          className={imageClass}
+          src={images[selectedIndex]}
+          alt={`Slide ${selectedIndex + 1}`}
+        />
         <button className="arrow right-arrow" onClick={nextImage}>
           &rarr;
         </button>
       </div>
     </div>
   );
-};
-
-export default ImageCarousel;
+}

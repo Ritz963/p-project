@@ -1,13 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MdOutlineUploadFile } from "react-icons/md";
-
+import { MdOutlineUploadFile } from 'react-icons/md';
 
 const UploadModal = ({ isOpen, onClose, onUpload }) => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
   const fileInputRef = useRef(null);
 
-  // Whenever `file` changes, generate (or revoke) the preview URL
+  // Reset internal state whenever modal is opened
+  useEffect(() => {
+    if (isOpen) {
+      setFile(null);
+      setPreviewUrl(null);
+      setLoading(false);
+      setResult(null);
+      setError('');
+      if (fileInputRef.current) fileInputRef.current.value = null;
+    }
+  }, [isOpen]);
+
+  // Generate preview when a file is selected
   useEffect(() => {
     if (!file) {
       setPreviewUrl(null);
@@ -15,30 +29,33 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
     }
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
-
-    // cleanup when component unmounts or file changes
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
-  const handleAreaClick = () => {
-    fileInputRef.current && fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const selected = e.target.files[0];
-    if (selected && (selected.type === 'image/jpeg' || selected.type === 'image/png')) {
-      setFile(selected);
+  const handleAreaClick = () => fileInputRef.current?.click();
+  const handleFileChange = e => {
+    const f = e.target.files[0];
+    if (f && (f.type === 'image/png' || f.type === 'image/jpeg')) {
+      setFile(f);
+      setError('');
+      setResult(null);
     } else {
-      // you could show an error here if you like
+      setError('Please select a PNG or JPEG image.');
       setFile(null);
     }
   };
 
-  const handleConfirm = () => {
-    if (file) {
-      onUpload(file);
-      setFile(null);
-      onClose();
+  const handleConfirm = async () => {
+    if (!file) return;
+    setLoading(true);
+    setError('');
+    try {
+      const data = await onUpload(file);
+      setResult(data);
+    } catch (err) {
+      setError(err.message || 'Upload failed.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,34 +64,47 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
   return (
     <div className="upload-modal" onClick={onClose}>
       <div className="modal-content" onClick={e => e.stopPropagation()}>
-        {/* Upload Area */}
+        {/* Upload area or preview */}
         <div className="upload-area" onClick={handleAreaClick}>
-          {previewUrl
-            ? <img src={previewUrl} alt="Preview" className="preview-image" />
-            : <>
-                <span className="upload-icon"><MdOutlineUploadFile /></span>
-                <p className="upload-text">Click or tap to select a file</p>
-              </>
-          }
+          {previewUrl ? (
+            <img src={previewUrl} alt="preview" className="preview-image" />
+          ) : (
+            <>
+              <MdOutlineUploadFile className="upload-icon" />
+              <p className="upload-text">Click or tap to select a file</p>
+            </>
+          )}
         </div>
 
-        {/* Hidden File Input */}
         <input
-          type="file"
-          accept=".jpg,.jpeg,.png"
           ref={fileInputRef}
-          onChange={handleFileChange}
+          type="file"
+          accept=".png,.jpg,.jpeg"
           style={{ display: 'none' }}
+          onChange={handleFileChange}
         />
 
-        {/* Confirm Button */}
-        <button
-          className="confirm-btn"
-          onClick={handleConfirm}
-          disabled={!file}
-        >
-          Confirm
-        </button>
+        {/* Status / result */}
+        {loading && <p>Processing…</p>}
+        {error && <p className="error-text">{error}</p>}
+        {result && (
+          <div className="result-info">
+            <p><strong>Type:</strong> {result.clothingType}</p>
+            <p><strong>Brand:</strong> {result.brand}</p>
+            <p><strong>Color:</strong> {result.color}</p>
+          </div>
+        )}
+
+        {/* Confirm button */}
+        {!loading && !result && (
+          <button
+            className="confirm-btn"
+            onClick={handleConfirm}
+            disabled={!file}
+          >
+            Confirm
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,26 +1,64 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavDropdown, Nav, Navbar, Container } from 'react-bootstrap';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useClosets } from '../hooks/useClosets';
 
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebaseClient';
 
+export default function Navigation() {
+  const { user }   = useAuth();
+  const { closets, loading } = useClosets(user?.uid);
+  const navigate   = useNavigate();
+  const params     = new URLSearchParams(useLocation().search);
+  const selected   = params.get('closet') || '';
 
-const Navigation = () => {
+    async function createCloset(name) {
+      if (!user || !name) return;
+      const ref = doc(db, 'users', user.uid, 'closets', name);
+      await setDoc(ref, { createdAt: serverTimestamp() });
+    }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">App Router</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Brand href="/">My Closet App</Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse>
           <Nav className="me-auto">
-            <Nav.Link href="/">Login</Nav.Link>
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/signup">Signup</Nav.Link>
+            <NavDropdown title="Closets" id="nav-closets-dropdown">
+              {loading && <NavDropdown.Item disabled>Loading…</NavDropdown.Item>}
+              {!loading && closets.map(name => (
+                <NavDropdown.Item
+                  key={name}
+                  active={name === selected}
+                  onClick={() => navigate(`/home/?closet=${encodeURIComponent(name)}`)}
+                >
+                  {name}
+                </NavDropdown.Item>
+              ))}
+              <NavDropdown.Divider />
+              <NavDropdown.Item
+               onClick={async () => {
+                 const name = prompt('New closet name:');
+                 if (!name) return;
+                 try {
+                   await createCloset(name);
+                   // immediately navigate into it
+                   navigate(`/home/?closet=${encodeURIComponent(name)}`);
+                 } catch (e) {
+                   console.error('Could not create closet', e);
+                   alert('Error creating closet');
+                 }
+               }}
+              >
+                + New Closet
+              </NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link href="/outfits">Outfits</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 }
-
-export default Navigation;
