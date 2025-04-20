@@ -1,3 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure the entire app fits the screen */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* Overall carousels container */
+.carousels-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;  /* centers each carousel horizontally */
+}
+
+/* Standard carousel container for all carousels (remains unchanged) */
+.carousel-image {
+  position: relative;
+  width: 500px;     /* Consistent container width */
+  height: 300px;    /* Consistent container height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Default image styling for all carousels */
+.carousel-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Override image styling for the shoes carousel only */
+.shoes-carousel .carousel-image img {
+  width: 300px !important;    /* Force smaller width for shoes image */
+  height: 150px !important;   /* Force smaller height for shoes image */
+  object-fit: contain;
+  margin: auto;               /* Center the smaller image within the container */
+}
+
+/* Override styling for shoes images only */
+.carousel-image img.shoes-image {
+  width: 300px !important;
+  height: 150px !important;
+  object-fit: contain;
+  margin: 0 auto;  /* removes vertical centering */
+  align-self: flex-start;
+}
+
+/* Arrow button styling remains the same */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.left-arrow {
+  left: 0.5rem;
+}
+
+.right-arrow {
+  right: 0.5rem;
+}
+
+/* Overall carousels container */
+.carousels-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;  /* centers each carousel horizontally */
+}
+
+/* Slick Carousel Container – the same for all carousels */
+.slick-carousel-container {
+  width: 500px;     /* Fixed container width */
+  height: 300px;    /* Fixed container height */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Each slide in the slider */
+.carousel-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px; /* same as container height */
+}
+
+/* Default styling for images (shirts, pants, etc.) */
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Override styling for shoes images only.
+   Ensure that the shoes carousel passes an extra class (e.g. "shoes-image")
+   to the img element. This rule forces the shoes image to be rendered smaller,
+   while leaving the container (and therefore arrow positions) unchanged. */
+.carousel-slide img.shoes-image {
+  width: 300px !important;
+  height: 150px !important;
+  object-fit: contain;
+  margin: auto;
+}
+
+/* React-slick default arrow button styling override */
+/* These selectors override the default arrow styles provided by slick-carousel */
+.slick-prev,
+.slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 2rem;
+  line-height: 40px; /* centers the arrow text */
+  cursor: pointer;
+}
+
+/* Adjust arrow positions if needed */
+.slick-prev {
+  left: 10px;
+}
+.slick-next {
+  right: 10px;
+}
+
+/* Override for the shoes carousel: make the image container smaller and center it */
+.shoes-carousel .carousel-image {
+  width: 300px;         /* Smaller width for shoes */
+  height: 150px;        /* Smaller height for shoes */
+  margin: 0 auto;       /* Center horizontally within the container */
+}
+
+/* Optionally adjust arrow sizes for the shoes carousel */
+.shoes-carousel .arrow {
+  font-size: 1.5rem;
+}
+
+/* Action buttons container on the right */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Shared styling for the action buttons */
+.action-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease;
+}
+
+.action-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 25px rgba(108, 30, 196, 0.25);
+  background: linear-gradient(135deg, #6436ed, #339af0);
+}
+
+.action-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* putting the upload button in the top right corner */
+.upload-btn {
+  position: absolute;
+  top: 80px; /* adjust based on navbar height */
+  right: 30px;
+}
+
+/* putting the randomize button and the save button next to each other on the bottom */
+.randomize-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 30%;
+  transform: translateX(50%);
+}
+
+.save-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 55%;
+  transform: translateX(-50%);
+}
+
+
 .App {
   text-align: center;
 }
@@ -45,7 +272,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 .login{
   /* background: url(../assets/background2.jpg) no-repeat; */
   background-size: cover;
@@ -58,18 +284,33 @@
 }
 
 .Signup{
-  background: url(../assets/background3.jpg) no-repeat; 
   background-size: cover;
   background-position: center;
   min-height: 100vh;
   min-width:100vh;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
 }
+
+.background-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(0.9); 
+  object-fit: cover;
+  z-index: -1;
+}
+
 
 body {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
 }
 
 .center-wrapper {
@@ -91,11 +332,12 @@ body {
   padding: 30px 40px;
 }
 
-
-
-.wrapper h1{
+.wrapper h1 {
   font-size: 36px;
   text-align: center;
+  color: #000000;
+  letter-spacing: 1px;
+  font-weight: 600;
 }
 
 .wrapper .input-box{
@@ -115,7 +357,6 @@ body {
   font-size: 16px;
   color: grey;
   padding: 20px 45px 20px 20px;
-
 }
 
 .input-box input::placeholder{
@@ -128,9 +369,7 @@ body {
   top: 50%;
   transform: translateY(-50%);
   font-size:20px;
-
 }
-
 
 .wrapper .remember-forgot {
   display: flex;
@@ -140,7 +379,7 @@ body {
 }
 
 .remember-forgot label input {
-  accent-color: grey;
+  accent-color: rgb(49, 125, 239);
   margin-right: 4px;
 }
 
@@ -156,15 +395,21 @@ body {
 .wrapper button {
   width: 100%;
   height: 45px;
-  background: white;
+  background: linear-gradient(135deg, #a9a7a7ab, #c2b1b1);
   border: none;
   outline: none;
   border-radius: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   cursor: pointer;
   font-size: 16px;
-  color: #333;
+  color: #ffffff;
   font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.wrapper button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .wrapper .register-link{
@@ -190,7 +435,6 @@ body {
   left:10px;
   top: 50%;
   transform: translateY(-10%);
-
 }
 
 .register-link p a {
@@ -202,8 +446,6 @@ body {
 .register-link p a:hover{
   text-decoration: underline;
 }
-
-
 
 .grid {
 	pointer-events: none;
@@ -237,7 +479,6 @@ body {
   background-position: center;
   background-repeat: no-repeat; 
 }
-
 
 .grid__item-img img {
   width: 100%;
@@ -316,4 +557,117 @@ body {
       stroke: var(--cursor-stroke);
       stroke-width: var(--cursor-stroke-width);
   }
+
+}
+
+/*
+***********
+***********
+MODAL STUFF
+***********
+***********
+*/
+
+/* Overlay */
+.upload-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* darker screen behind */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.upload-modal .modal-content {
+  position: relative;
+  width: 80%;            /* 80% of viewport width */
+  max-width: 600px;      /* no wider than 600px */
+  min-height: 60vh;      /* at least 60% of viewport height */
+  padding: 3rem 2rem 1.5rem; /* extra top padding for the close button */
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close “X” */
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #6436ed, #339af0);
+  color: #fff;          /* white “X” */
+  border: none;
+  border-radius: 50%;   /* circle */
+  font-size: 1.2rem;
+  line-height: 32px;    /* vertically center the text */
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Upload Area */
+.upload-area {
+  width: 100%;
+  height: 200px;
+  background: #dddde3;
+  border: 2px dashed #565656;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;               /* fill available vertical space */
+  margin-bottom: 1.5rem;
+  overflow: hidden; /* ensure the preview doesn’t overflow */
+
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.upload-text {
+  color: #030303;
+  font-size: 0.95rem;
+}
+
+/* Confirm Button */
+.confirm-btn {
+  margin-top: auto;      /* push it to the bottom of the flex container */
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, #a9a7a7ab, #c2b1b1);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.confirm-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.confirm-btn:not(:disabled):hover {
+  background: #0056b3;
+}
+
+.upload-area .preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
 }
