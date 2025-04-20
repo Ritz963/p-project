@@ -15,9 +15,9 @@ import img9 from '../assets/img9.png';
 
 const ClosetCarousels = () => {
   // Group images by category
-  const shirts = [img1, img2, img3];
-  const pants = [img4, img5, img6];
-  const shoes = [img7, img8, img9];
+  const shirts = [img7, img9, img3];
+  const pants = [img4, img6];
+  const shoes = [img1, img8];
 
   return (
     <div className="carousels-container">
