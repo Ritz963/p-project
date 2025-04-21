@@ -12,9 +12,8 @@ import os from 'os';
 import { spawn } from 'child_process';
 import { getJson } from 'serpapi';
 import authRoutes from './routes/auth.js';
-import { db } from './config/firebase.js';  // Admin SDK Firestore
+import { db } from './config/firebase.js';  
 
-// Import metadata extractors
 import {
   extractClothingType,
   extractBrand,
@@ -22,7 +21,6 @@ import {
   categorizeClothing
 } from './helpers/clothingHelpers.js';
 
-// Load environment variables
 dotenv.config();
 
 const {
@@ -33,7 +31,6 @@ const {
   SERPAPI_KEY
 } = process.env;
 
-// Initialize AWS S3 client
 const s3 = new S3Client({
   region: AWS_REGION,
   credentials: {
@@ -62,14 +59,14 @@ app.post('/upload', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'Missing image, userId, or closetName' });
     }
 
-    // 1️⃣ Save to temp
+    //save the file to temp directory
     const tempDir = path.join(process.cwd(), 'temp');
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
     const tempPath = path.join(tempDir, file.originalname);
     fs.writeFileSync(tempPath, file.buffer);
     console.log('saved temp file');
 
-    // 2️⃣ Remove background via Python script
+    //remove background with pythogn script
     const pythonExe = os.platform() === 'win32' ? 'python' : 'python3';
     const py = spawn(pythonExe, [path.join(process.cwd(), 'background_removal.py'), tempPath]);
     let output = '';
@@ -82,7 +79,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
       const processedBuffer = fs.readFileSync(processedPath);
       console.log('background removed');
 
-      // 3️⃣ Upload originals and processed images to S3
+      
       const originalKey = `uploads/${uuidv4()}-${file.originalname}`;
       const processedKey = `uploads/${uuidv4()}-${path.basename(processedPath)}`;
 
@@ -100,28 +97,23 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         ContentType: 'image/png',
       }));
 
-      const originalUrl = 
-      `https://${BUCKET_NAME}.s3.amazonaws.com/` +
-      originalKey.split('/').map(encodeURIComponent).join('/');
-    
-    const processedUrl =
-      `https://${BUCKET_NAME}.s3.amazonaws.com/` +
-      processedKey.split('/').map(encodeURIComponent).join('/'); 
-       console.log('uploaded to S3', originalUrl);
+      //Get image URLs
+      const originalUrl = `https://${BUCKET_NAME}.s3.amazonaws.com/` + originalKey.split('/').map(encodeURIComponent).join('/');
+      const processedUrl = `https://${BUCKET_NAME}.s3.amazonaws.com/` + processedKey.split('/').map(encodeURIComponent).join('/'); 
+      console.log('uploaded to S3', originalUrl);
 
-      // 4️⃣ Reverse image search via SerpAPI using URL
       let titles = [];
       try {
-        // fire off a google_reverse_image query against your processed image URL
+        //Get reverse image search results
         const response = await new Promise((resolve, reject) => {
           getJson({
             engine:        'google_reverse_image',
-            image_url:     originalUrl,   // or originalUrl, as you prefer
+            image_url:     originalUrl,   
             api_key:       SERPAPI_KEY
           }, (data, err) => err ? reject(err) : resolve(data));
         });
       
-        // grab the top‑5 image_results titles
+        //Looks at top 8 results
         const results = response.image_results || [];
         titles = results.slice(0, 8).map(r => r.title);
         console.log('reverse image search complete', titles);
@@ -130,14 +122,12 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         console.error('SerpAPI search error:', searchErr);
       }
 
-      // 5️⃣ Extract metadata
       const clothingType = extractClothingType(titles);
       const category = categorizeClothing(clothingType);
       const brand = extractBrand(titles);
       const color = extractColor(titles);
       console.log('metadata extracted');
 
-      // 6️⃣ Persist to Firestore (Admin SDK)
       const userDoc = db.collection('users').doc(userId);
       const closetDoc = userDoc.collection('closets').doc(closetName);
       const categoryCollection = closetDoc.collection(category);
@@ -145,11 +135,10 @@ app.post('/upload', upload.single('image'), async (req, res) => {
       await itemDoc.set({ brand, color, imageUrl: processedUrl, type: clothingType, createdAt: new Date() });
       console.log('metadata saved to Firestore');
 
-      // 7️⃣ Cleanup temp files
+      //delete temp files
       fs.unlinkSync(tempPath);
       fs.unlinkSync(processedPath);
 
-      // 8️⃣ Respond
       res.json({ originalUrl, processedUrl, clothingType, brand, color, titles });
     });
   } catch (err) {

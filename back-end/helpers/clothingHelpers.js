@@ -1,14 +1,14 @@
 const clothingTypes = [
     "shirt", "pants", "dress", "skirt", "jacket", "coat", "sweater", "t-shirt",
     "jeans", "shorts", "blouse", "suit", "hoodie", "scarf", "gloves", "hat",
-    "cap", "shoes", "boots", "sneakers", "sneaker", "socks", "tie", "belt", "underwear", " Tee", "boost"
+    "cap", "shoes", "boots", "sneakers", "sneaker", "socks", "tie", "belt", "underwear", " Tee", "boost", "Slipper", 
 ];
 
 
 const brands = [
     "Nike", "Adidas", "Puma", "Gucci", "Prada", "Louis Vuitton", "Chanel",
     "H&M", "Zara", "Uniqlo", "Levi's", "Ralph Lauren", "Calvin Klein", "Tommy Hilfiger", "Essentials", "Gallery Dept",
-    "New Balance", "Yeezy", "adidas", "Chrome hearts", "GAP", "Columbia", "Hermes", "Skechers", "Vans", "Timberland",
+    "New Balance", "Yeezy", "adidas", "Chrome hearts", "GAP", "Columbia", "Hermes", "Skechers", "Vans", "Timberland", "UGG",
     // add more later
 ];
 
@@ -32,7 +32,7 @@ export function extractClothingType(titles) {
     return sorted.length ? sorted[0][0] : 'Unknown';
 }
 
-// Extract the most frequent brand from search titles
+//extract the most frequent brand from search titles
 export function extractBrand(titles) {
     const foundBrands = {};
     titles.forEach(title => {
@@ -46,7 +46,7 @@ export function extractBrand(titles) {
     return sorted.length ? sorted[0][0] : 'Unknown';
 }
 
-// Extract the most frequent color from search titles
+//extract the most frequent color from search titles
 export function extractColor(titles) {
     const foundColors = {};
     titles.forEach(title => {
@@ -60,12 +60,12 @@ export function extractColor(titles) {
     return sorted.length ? sorted[0][0] : 'Unknown';
 }
 
-// Categorize a clothing type into tops, bottoms, shoes, or other
+//categorize a clothing type into tops, bottoms, shoes, or other
 export function categorizeClothing(type) {
     const t = type.toLowerCase();
     const tops = ['shirt','t-shirt','suit','hoodie','blouse','sweater','jacket','coat','dress','tee'];
     const bottoms = ['pants','jeans','shorts','skirt','trousers','leggings','sweatpants','joggers'];
-    const shoes = ['shoes','boots','sneakers','sandals','sneaker','boost'];
+    const shoes = ['shoes','boots','sneakers','sandals','sneaker','boost', 'slipper'];
     if (tops.includes(t)) return 'tops';
     if (bottoms.includes(t)) return 'bottoms';
     if (shoes.includes(t)) return 'shoes';

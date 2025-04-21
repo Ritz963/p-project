@@ -1,6 +1,8 @@
 import fs from 'fs';
 import { spawn } from 'child_process';
 
+
+//just runs the background removal python script on files in input path
 export function removeBackground(pythonExe, scriptPath, inputPath) {
   return new Promise((resolve, reject) => {
     const py = spawn(pythonExe, [scriptPath, inputPath]);

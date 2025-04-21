@@ -9,7 +9,6 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
   const [error, setError] = useState('');
   const fileInputRef = useRef(null);
 
-  // Reset internal state whenever modal is opened
   useEffect(() => {
     if (isOpen) {
       setFile(null);
@@ -21,7 +20,7 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
     }
   }, [isOpen]);
 
-  // Generate preview when a file is selected
+  //generate preview when a file is selected
   useEffect(() => {
     if (!file) {
       setPreviewUrl(null);
@@ -64,7 +63,6 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
   return (
     <div className="upload-modal" onClick={onClose}>
       <div className="modal-content" onClick={e => e.stopPropagation()}>
-        {/* Upload area or preview */}
         <div className="upload-area" onClick={handleAreaClick}>
           {previewUrl ? (
             <img src={previewUrl} alt="preview" className="preview-image" />
@@ -84,7 +82,6 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
           onChange={handleFileChange}
         />
 
-        {/* Status / result */}
         {loading && <p>Processing…</p>}
         {error && <p className="error-text">{error}</p>}
         {result && (
@@ -95,7 +92,6 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
           </div>
         )}
 
-        {/* Confirm button */}
         {!loading && !result && (
           <button
             className="confirm-btn"
