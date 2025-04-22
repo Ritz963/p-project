@@ -20,44 +20,41 @@ export default function Navigation() {
     }
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar className="bg-body-tertiary custom-navbar">
       <Container>
         <Navbar.Brand href="/">My Closet App</Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse>
-          <Nav className="me-auto">
-            <NavDropdown title="Closets" id="nav-closets-dropdown">
-              {loading && <NavDropdown.Item disabled>Loading…</NavDropdown.Item>}
-              {!loading && closets.map(name => (
-                <NavDropdown.Item
-                  key={name}
-                  active={name === selected}
-                  onClick={() => navigate(`/home/?closet=${encodeURIComponent(name)}`)}
-                >
-                  {name}
-                </NavDropdown.Item>
-              ))}
-              <NavDropdown.Divider />
+        <Nav className="me-auto">
+          <NavDropdown title="Closets" id="nav-closets-dropdown">
+            {loading && <NavDropdown.Item disabled>Loading…</NavDropdown.Item>}
+            {!loading && closets.map(name => (
               <NavDropdown.Item
-               onClick={async () => {
-                 const name = prompt('New closet name:');
-                 if (!name) return;
-                 try {
-                   await createCloset(name);
-                   // immediately navigate into it
-                   navigate(`/home/?closet=${encodeURIComponent(name)}`);
-                 } catch (e) {
-                   console.error('Could not create closet', e);
-                   alert('Error creating closet');
-                 }
-               }}
+                key={name}
+                active={name === selected}
+                onClick={() => navigate(`/home/?closet=${encodeURIComponent(name)}`)}
               >
-                + New Closet
+                {name}
               </NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="/outfits">Outfits</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+            ))}
+            <NavDropdown.Divider />
+            <NavDropdown.Item
+             onClick={async () => {
+               const name = prompt('New closet name:');
+               if (!name) return;
+               try {
+                 await createCloset(name);
+                 // immediately navigate into it
+                 navigate(`/home/?closet=${encodeURIComponent(name)}`);
+               } catch (e) {
+                 console.error('Could not create closet', e);
+                 alert('Error creating closet');
+               }
+             }}
+            >
+              + New Closet
+            </NavDropdown.Item>
+          </NavDropdown>
+          <Nav.Link href="/outfits">Outfits</Nav.Link>
+        </Nav>
       </Container>
     </Navbar>
   );

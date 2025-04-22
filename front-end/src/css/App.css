@@ -20,20 +20,19 @@
 
 /* Main content area */
 .main-content {
-  flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 1rem;
+  flex-wrap: wrap;            /* ← allow wrapping */
+  gap: 2rem;                  /* space between columns or rows */
+  align-items: flex-start;    /* align each block at the top */
 }
 
 /* Overall carousels container */
 .carousels-container {
+  flex: 1 1 500px;            /* grow, shrink, minimum 500px */
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  align-items: center;  /* centers each carousel horizontally */
+  align-items: center;
 }
 
 /* Standard carousel container for all carousels (remains unchanged) */
@@ -168,16 +167,27 @@
   font-size: 1.5rem;
 }
 
-/* Action buttons container on the right */
+/* Prevent the buttons container from shrinking and squishing its children */
 .action-buttons {
+  position: fixed; /* Keep it fixed at the bottom */
+  bottom: 20px;
+  left: 0;
+  right: 0;
   display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  align-items: center;
-  padding: 1rem;
+  justify-content: center; /* Center horizontally */
+  gap: 20px; /* Space between buttons */
+  padding: 0 20px; /* Padding on the sides */
+  z-index: 100; /* Ensure buttons are above other content */
 }
 
-/* Shared styling for the action buttons */
+/* Remove absolute positioning from individual buttons */
+.randomize-btn, .save-btn {
+  position: static; /* Remove absolute positioning */
+  transform: none; /* Remove transforms */
+  min-width: 120px; /* Ensure minimum width */
+  flex: 0 1 auto; /* Don't grow, can shrink, auto basis */
+}
+
 .action-btn {
   padding: 1rem 2rem;
   font-size: 1.1rem;
@@ -191,39 +201,43 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease;
 }
 
+/* Keep upload button separate */
+.upload-btn {
+  position: absolute;
+  top: 80px;
+  right: 30px;
+}
+
+/* For very small screens, stack the buttons */
+@media (max-width: 400px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #6436ed, #339af0);
+}
+
+.randomize-btn {
+  background: linear-gradient(135deg, #6436ed, #339af0);
+}
+
+/* Remove the scale on hover so the buttons don’t “jump” */
 .action-btn:hover {
-  transform: scale(1.08);
+  /* no transform here */
   box-shadow: 0 10px 25px rgba(108, 30, 196, 0.25);
   background: linear-gradient(135deg, #6436ed, #339af0);
 }
 
+/* Likewise don’t shrink on active */
 .action-btn:active {
-  transform: scale(0.98);
+  transform: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
-/* putting the upload button in the top right corner */
-.upload-btn {
-  position: absolute;
-  top: 80px; /* adjust based on navbar height */
-  right: 30px;
-}
-
-/* putting the randomize button and the save button next to each other on the bottom */
-.randomize-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 30%;
-  transform: translateX(50%);
-}
-
-.save-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 55%;
-  transform: translateX(-50%);
-}
-
 
 .App {
   text-align: center;
@@ -670,4 +684,218 @@ MODAL STUFF
   max-height: 100%;
   object-fit: contain;
   border-radius: 8px;
+}
+
+.bg-body-tertiary{
+  background-color: white;
+}
+
+
+.custom-navbar .navbar-collapse {
+  display: flex !important;
+}
+
+.custom-navbar .navbar-toggler {
+  display: none !important;
+}
+
+.info-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.info-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 90%;
+  width: 300px;
+  text-align: center;
+}
+.info-image {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+.info-modal button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none; border-radius: 6px;
+  background: #2575fc; color: white;
+}
+
+.outfits-page {
+  padding: 2rem;
+}
+
+.outfits-page > h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.outfits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+/* Outfit card styles */
+.outfit-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1rem;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.outfit-name {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.outfit-images {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.outfit-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.outfit-footer {
+  margin-top: auto;
+}
+
+.outfit-cost {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Responsive: one column on very small screens */
+@media (max-width: 600px) {
+  .outfits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outfit-stack {
+  position: relative;
+  width: 100px;    /* adjust to your desired width */
+  height: 260px;   /* enough height for stacked garments */
+  margin-bottom: 1rem;
+}
+
+.stack-img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* z‑index controls wearer order */
+.stack-img.shoes   { bottom: 0; z-index: 1; }
+.stack-img.bottoms { bottom: 50px; z-index: 2; }
+.stack-img.tops    { bottom: 150px; z-index: 3; }
+
+/* src/css/Outfits.css */
+.back-btn {
+  background: none;
+  border: none;
+  color: #2575fc;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+/*339af0    6436ed  */
+
+
+.loading-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #eeeeee;            /* or whatever backdrop you like */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* The main loader container */
+.loader {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  color: #339af0;                /* primary color for the first dot */
+  transform: rotateZ(45deg);
+  perspective: 1000px;
+}
+
+/* Two dots (pseudo‑elements) spinning in 3D */
+.loader:before,
+.loader:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: inherit; height: inherit;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Front‑facing dot */
+.loader:before {
+  transform: rotateX(70deg);
+  /* inherits color: white */
+}
+
+/* Side‑facing dot */
+.loader:after {
+  transform: rotateY(70deg);
+  animation-delay: 0.4s;
+  color: #6436ed;             /* second dot’s color */
+}
+
+/* Keyframes for the two‑dot spin/fade effect */
+@keyframes spin {
+  0%,100% { box-shadow: 0.2em 0 0 0 currentcolor; }
+  12% {      box-shadow: 0.2em 0.2em 0 0 currentcolor; }
+  25% {      box-shadow: 0    0.2em 0 0 currentcolor; }
+  37% {      box-shadow:-0.2em 0.2em 0 0 currentcolor; }
+  50% {      box-shadow:-0.2em 0    0 0 currentcolor; }
+  62% {      box-shadow:-0.2em-0.2em 0 0 currentcolor; }
+  75% {      box-shadow: 0   -0.2em 0 0 currentcolor; }
+  87% {      box-shadow: 0.2em-0.2em 0 0 currentcolor; }
+}
+
+/* Fade‑in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
 }

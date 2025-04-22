@@ -2,20 +2,20 @@
 import React from 'react';
 
 export default function ImageCarousel({
-  images,
-  imageClass = '',
-  selectedIndex = 0,      // controlled index
-  onChangeIndex = () => {}// notify parent when index changes
+  items,
+  selectedIndex = 0,
+  onChangeIndex = () => {},
+  onItemClick = () => {},
+  imageClass = ''
 }) {
   const nextImage = () => {
-    const nxt = (selectedIndex + 1) % images.length;
-    onChangeIndex(nxt);
+    onChangeIndex((selectedIndex + 1) % items.length);
+  };
+  const prevImage = () => {
+    onChangeIndex((selectedIndex - 1 + items.length) % items.length);
   };
 
-  const prevImage = () => {
-    const prev = (selectedIndex - 1 + images.length) % images.length;
-    onChangeIndex(prev);
-  };
+  const current = items[selectedIndex];
 
   return (
     <div className="carousel">
@@ -25,8 +25,9 @@ export default function ImageCarousel({
         </button>
         <img
           className={imageClass}
-          src={images[selectedIndex]}
-          alt={`Slide ${selectedIndex + 1}`}
+          src={current.imageUrl}
+          alt=""
+          onClick={() => onItemClick(current)}
         />
         <button className="arrow right-arrow" onClick={nextImage}>
           &rarr;

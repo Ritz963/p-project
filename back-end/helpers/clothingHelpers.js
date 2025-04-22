@@ -1,14 +1,15 @@
 const clothingTypes = [
     "shirt", "pants", "dress", "skirt", "jacket", "coat", "sweater", "t-shirt",
     "jeans", "shorts", "blouse", "suit", "hoodie", "scarf", "gloves", "hat",
-    "cap", "shoes", "boots", "sneakers", "sneaker", "socks", "tie", "belt", "underwear", " Tee", "boost", "Slipper", 
+    "cap", "shoes", "boots", "sneakers", "sneaker", "socks", "tie", "belt", "underwear", "tee", "boost", "Slipper", 
 ];
 
 
 const brands = [
     "Nike", "Adidas", "Puma", "Gucci", "Prada", "Louis Vuitton", "Chanel",
     "H&M", "Zara", "Uniqlo", "Levi's", "Ralph Lauren", "Calvin Klein", "Tommy Hilfiger", "Essentials", "Gallery Dept",
-    "New Balance", "Yeezy", "adidas", "Chrome hearts", "GAP", "Columbia", "Hermes", "Skechers", "Vans", "Timberland", "UGG",
+    "New Balance", "Yeezy", "adidas", "Chrome hearts", "GAP", "Columbia", "Hermes", "Skechers", "Vans", "Timberland", "UGG", "Converse",
+    "Rick Owens", "Acne Studios"
     // add more later
 ];
 
